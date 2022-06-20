@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.*;
 
 @Controller
@@ -27,7 +26,7 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // начальная страница
+    // start page
     @RequestMapping("/")
     public String showAllUsers(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = (User) userService.loadUserByUsername(userDetails.getUsername());
@@ -39,15 +38,7 @@ public class AdminController {
         return "admin";
     }
 
-//    @GetMapping(value = "/admin")
-//    public String listUsers(Model model, Principal principal) {
-//        model.addAttribute("allUsers", userService.getAllUsers());
-//        User user = userService.getUserByUsername(principal.getName());
-//        model.addAttribute("mainUser",user);
-//        return "admin";
-//    }
-
-    // добавление нового пользователяю
+    // add new user
     @PostMapping("/saveUser")
     public String addUser(@ModelAttribute User newUser,
                           @RequestParam(value = "checkboxName", required = false) Long[] checkboxName) {
@@ -63,18 +54,12 @@ public class AdminController {
     }
 
 
-    //    обновление данных пользователя, используем 2 метода
-    @PatchMapping("updateUser/{id}")
+    //update user
+
+    @PutMapping("updateUser/{id}")
     public String updateUser(@ModelAttribute User editUser,
-                             @RequestParam(value = "checkboxName", required = false) Long[] checkboxName,
-                             @RequestParam(value = "enabled", required = false) String enabledCheckbox) {
-        System.out.println(enabledCheckbox);
+                          @RequestParam(value = "checkboxName", required = false) Long[] checkboxName) {
         Set<Role> rolesSet = new HashSet<>();
-//        0if ((enabledCheckbox != null) && (enabledCheckbox.equals("1"))) {
-//            editUser.setEnabled(true);
-//        } else {
-//            editUser.setEnabled(false);
-//        }
 
         if (checkboxName != null) {
             for (long i : checkboxName) {
@@ -82,11 +67,12 @@ public class AdminController {
             }
         }
         editUser.setRoles(rolesSet);
-        userService.saveUser(editUser);
+        userService.saveAndFlush(editUser);
         return "redirect:/admin/";
     }
 
-    //    удаление пользователя, используем 2 метода
+
+    //delete user
     @GetMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") long id) {
         System.out.println("deleteUser/deleteUser");

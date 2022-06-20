@@ -35,7 +35,6 @@ public class User implements UserDetails {
     @Column(name = "age")
     private byte age;
 
-//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @ManyToMany
     @JoinTable(
             name = "users_roles",

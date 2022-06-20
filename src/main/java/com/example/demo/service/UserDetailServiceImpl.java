@@ -13,7 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -83,5 +85,15 @@ public class UserDetailServiceImpl implements UserService, UserDetailsService {
 
     public Role getRoleById(Long idRole) {
         return roleRepository.getRoleById(idRole);
+    }
+
+    public Set<Role> getRoles (ArrayList<Long> roles) {
+
+        return roleRepository.findByIdIn(roles);
+    }
+
+    @Override
+    public void saveAndFlush(User user) {
+        userRepository.saveAndFlush(user);
     }
 }

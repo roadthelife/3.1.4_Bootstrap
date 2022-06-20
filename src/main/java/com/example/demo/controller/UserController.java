@@ -13,26 +13,15 @@ import java.security.Principal;
 @RequestMapping("/")
 public class UserController {
 
-
-    private UserDetailServiceImpl userService;
+    private final UserDetailServiceImpl userService;
 
     @Autowired
     public UserController(UserDetailServiceImpl userService) {
         this.userService = userService;
     }
 
-    // начальная страница
-    @GetMapping({"/", "/index"})
-    public String indexPage() {
-        return "index";
-    }
-
-    @GetMapping({"authorized"})
-    public String authorizedPage() {
-        return "authorized";
-    }
-
     @RequestMapping("/user")
+    @GetMapping("/user")
     public String showAllUsers(Model model, Principal principal) {
         User user = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("currentUserRoleList", user.getRoles());
@@ -40,6 +29,4 @@ public class UserController {
         System.out.println("showAllUsers/allUsers " + user.getRoles().toString());
         return "user";
     }
-
-
 }
