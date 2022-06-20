@@ -32,19 +32,18 @@ public class AdminController {
         User user = (User) userService.loadUserByUsername(userDetails.getUsername());
         model.addAttribute("newUser", new User());
         model.addAttribute("roleList", userService.getAllRoles());
-        model.addAttribute("currentUserRoleList", user.getRoles());
+        model.addAttribute("rolesList", user.getRoles());
         model.addAttribute("userList", userService.getAllUsers());
-        System.out.println("showAllUsers/allUsers " + user.getRoles().toString());
         return "admin";
     }
 
     // add new user
     @PostMapping("/saveUser")
     public String addUser(@ModelAttribute User newUser,
-                          @RequestParam(value = "checkboxName", required = false) Long[] checkboxName) {
+                          @RequestParam(value = "roleBox", required = false) Long[] roleBox) {
         Set<Role> rolesSet = new HashSet<>();
-        if (checkboxName != null) {
-            for (long i : checkboxName) {
+        if (roleBox != null) {
+            for (long i : roleBox) {
                 rolesSet.add(userService.getRoleById(i));
             }
         }
@@ -58,11 +57,11 @@ public class AdminController {
 
     @PutMapping("updateUser/{id}")
     public String updateUser(@ModelAttribute User editUser,
-                          @RequestParam(value = "checkboxName", required = false) Long[] checkboxName) {
+                             @RequestParam(value = "roleBox", required = false) Long[] roleBox) {
         Set<Role> rolesSet = new HashSet<>();
 
-        if (checkboxName != null) {
-            for (long i : checkboxName) {
+        if (roleBox != null) {
+            for (long i : roleBox) {
                 rolesSet.add(userService.getRoleById(i));
             }
         }
@@ -75,7 +74,6 @@ public class AdminController {
     //delete user
     @GetMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") long id) {
-        System.out.println("deleteUser/deleteUser");
         userService.deleteUserById(id);
         return "redirect:/admin/";
     }

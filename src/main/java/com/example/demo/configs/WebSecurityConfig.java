@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final SuccessUserHandler successUserHandler;
-    public WebSecurityConfig(@Qualifier("userDetailServiceImpl") UserDetailsService userDetailsService,
+    public WebSecurityConfig(UserDetailsService userDetailsService,
                              SuccessUserHandler successUserHandler) {
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
@@ -39,15 +39,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .cors().disable()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/user/**").hasAnyAuthority("ADMIN", "USER")
-//                .antMatchers("/admin/**").hasRole("ADMIN") // в б.д надо чтобы роли начинались на ROLE_
-//                .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/", "/index").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().successHandler(successUserHandler) //переадресовывает пользователя на соответствующую страницу
+                .formLogin().successHandler(successUserHandler)
+                .and()
+                .logout()
+                .permitAll();
         ;
     }
 

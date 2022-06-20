@@ -79,17 +79,8 @@ public class UserDetailServiceImpl implements UserService, UserDetailsService {
         return roleRepository.findAll();
     }
 
-    public Role getRoleByName(String roleName) {
-        return roleRepository.getRoleByName(roleName);
-    }
-
     public Role getRoleById(Long idRole) {
         return roleRepository.getRoleById(idRole);
-    }
-
-    public Set<Role> getRoles (ArrayList<Long> roles) {
-
-        return roleRepository.findByIdIn(roles);
     }
 
     @Override

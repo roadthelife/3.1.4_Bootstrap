@@ -24,9 +24,8 @@ public class UserController {
     @GetMapping("/user")
     public String showAllUsers(Model model, Principal principal) {
         User user = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("currentUserRoleList", user.getRoles());
-        model.addAttribute("currentUser", user);
-        System.out.println("showAllUsers/allUsers " + user.getRoles().toString());
+        model.addAttribute("rolesList", user.getRoles());
+        model.addAttribute("user", user);
         return "user";
     }
 }

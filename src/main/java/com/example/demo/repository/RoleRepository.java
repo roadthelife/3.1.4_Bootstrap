@@ -10,7 +10,7 @@ import java.util.Set;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
     Role getRoleByName(String roleName);
+
     Role getRoleById(Long id);
 
-    Set<Role> findByIdIn(List<Long> ids);
 }

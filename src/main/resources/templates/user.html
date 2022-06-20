@@ -13,7 +13,7 @@
 <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand text-white">
         <strong> [[${#httpServletRequest.remoteUser}]]</strong> with roles:
-        <tr th:each="role: ${currentUserRoleList}">
+        <tr th:each="role: ${rolesList}">
             <td th:text="${role.getName()}"/>
         </tr>
     </a>
@@ -73,13 +73,13 @@
                                     <th>Email</th>
                                     <th>Role</th>
                                 </tr>
-                                <td th:utext="${currentUser.getId()}">index</td>
-                                <td th:utext="${currentUser.getFirstname()}">index</td>
-                                <td th:utext="${currentUser.getLastname()}">index</td>
-                                <td th:utext="${currentUser.getAge()}">index</td>
-                                <td th:utext="${currentUser.getUsername()}">index</td>
+                                <td th:utext="${user.getId()}">index</td>
+                                <td th:utext="${user.getFirstname()}">index</td>
+                                <td th:utext="${user.getLastname()}">index</td>
+                                <td th:utext="${user.getAge()}">index</td>
+                                <td th:utext="${user.getUsername()}">index</td>
                                 <td>
-                                    <span th:each="role: ${currentUser.getRoles()}"><span
+                                    <span th:each="role: ${user.getRoles()}"><span
                                             th:text="${role.name}"/> </span>
                                 </td>
 

@@ -56,21 +56,6 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public User(String username, String firstname, String lastname, String password, byte age, Set<Role> roles) {
-        this(username, firstname, lastname, password, age);
-        this.roles = roles;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", age=" + age +
-                '}';
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
