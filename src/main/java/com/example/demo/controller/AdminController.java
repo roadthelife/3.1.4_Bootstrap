@@ -2,47 +2,50 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
-import com.example.demo.service.RoleServiceImpl;
 import com.example.demo.service.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
-public class ControllerAdmin {
+public class AdminController {
 
-    private final UserDetailServiceImpl userDetailServiceImpl;
-    private final RoleServiceImpl roleServiceImpl;
+    private final UserDetailServiceImpl userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ControllerAdmin(UserDetailServiceImpl userDetailServiceImpl, RoleServiceImpl roleServiceImpl) {
-        this.userDetailServiceImpl = userDetailServiceImpl;
-        this.roleServiceImpl = roleServiceImpl;
+    public AdminController(UserDetailServiceImpl userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // начальная страница
     @RequestMapping("/")
     public String showAllUsers(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        User user = (User) userDetailServiceImpl.loadUserByUsername(userDetails.getUsername());
+        User user = (User) userService.loadUserByUsername(userDetails.getUsername());
         model.addAttribute("newUser", new User());
-        model.addAttribute("roleList", roleServiceImpl.getAllRoles());
+        model.addAttribute("roleList", userService.getAllRoles());
         model.addAttribute("currentUserRoleList", user.getRoles());
-        model.addAttribute("userList", userDetailServiceImpl.getAllUsers());
+        model.addAttribute("userList", userService.getAllUsers());
         System.out.println("showAllUsers/allUsers " + user.getRoles().toString());
         return "admin";
     }
+
+//    @GetMapping(value = "/admin")
+//    public String listUsers(Model model, Principal principal) {
+//        model.addAttribute("allUsers", userService.getAllUsers());
+//        User user = userService.getUserByUsername(principal.getName());
+//        model.addAttribute("mainUser",user);
+//        return "admin";
+//    }
 
     // добавление нового пользователяю
     @PostMapping("/saveUser")
@@ -51,11 +54,11 @@ public class ControllerAdmin {
         Set<Role> rolesSet = new HashSet<>();
         if (checkboxName != null) {
             for (long i : checkboxName) {
-                rolesSet.add(roleServiceImpl.getRoleById(i));
+                rolesSet.add(userService.getRoleById(i));
             }
         }
         newUser.setRoles(rolesSet);
-        userDetailServiceImpl.saveUser(newUser);
+        userService.saveUser(newUser);
         return "redirect:/admin/";
     }
 
@@ -75,11 +78,11 @@ public class ControllerAdmin {
 
         if (checkboxName != null) {
             for (long i : checkboxName) {
-                rolesSet.add(roleServiceImpl.getRoleById(i));
+                rolesSet.add(userService.getRoleById(i));
             }
         }
         editUser.setRoles(rolesSet);
-        userDetailServiceImpl.saveUser(editUser);
+        userService.saveUser(editUser);
         return "redirect:/admin/";
     }
 
@@ -87,7 +90,7 @@ public class ControllerAdmin {
     @GetMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") long id) {
         System.out.println("deleteUser/deleteUser");
-        userDetailServiceImpl.deleteUserById(id);
+        userService.deleteUserById(id);
         return "redirect:/admin/";
     }
 

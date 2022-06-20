@@ -10,6 +10,7 @@
     <title>Admin panel</title>
 </head>
 <body>
+<!-- top bar-->
 <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand text-white">
         <strong> [[${#httpServletRequest.remoteUser}]]</strong> with roles:
@@ -23,7 +24,7 @@
         </li>
     </ul>
 </nav>
-
+<!-- left bar -->
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-sm-2 bg-white min-vh-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -37,7 +38,7 @@
                 </li>
             </ul>
         </div>
-        <!--            правая колонка, где набор вкладок -->
+        <!--  bar -->
         <div class="col-sm-10 bg-light">
             <div class="container-fluid">
                 <h1 class="m-3 fw-bold">
@@ -52,9 +53,8 @@
                     </li>
                 </ul>
                 <div class="tab-content p-1">
-                    <!--*********** TAB All Users ************************-->
+                    <!--All Users-->
                     <div class="tab-pane fade show active" id="user_table">
-                        <!--                        <h4 class="h4 md-1">All Users</h4>-->
                         <div class="card-header">
                             <div class="m-1">
                                 <h4>All users</h4>
@@ -80,14 +80,14 @@
                                         <td th:utext="${currentUser.getFirstname()}">index</td>
                                         <td th:utext="${currentUser.getLastname()}">index</td>
                                         <td th:utext="${currentUser.getAge()}">index</td>
-                                        <td th:utext="${currentUser.getEmail()}">index</td>
+                                        <td th:utext="${currentUser.getUsername()}">index</td>
                                         <td>
                                             <span th:each="role: ${currentUser.getRoles()}"><span
                                                     th:text="${role.name}"/> </span>
                                         </td>
-                                        <!--**********************EDIT ON**************************-->
+                                        <!--EDIT -->
                                         <td>
-                                            <!-- Button trigger modal -->
+                                            <!-- Button  -->
                                             <button type="button" class="btn btn-info" data-toggle="modal"
                                                     th:data-target="${'#updateUser' + currentUser.getId()}">
                                                 Edit
@@ -105,7 +105,6 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-
                                                         <form th:method="PATCH"
                                                               th:action="@{updateUser/{id}(id=${currentUser.getId()})}"
                                                               id="editUser">
@@ -139,8 +138,6 @@
                                                                                    type="text"
                                                                                    th:value="${currentUser.getLastname()}"/>
                                                                         </div>
-                                                                        <!--                                                                        <div class="row">-->
-                                                                        <!--                                                                            <div class="col-sm-6 bg-white">-->
                                                                         <div class="form-group text-center">
                                                                             <label for="editAge" class="col-form-label"><strong>Age</strong></label>
                                                                             <input class="form-control form-control-sm"
@@ -149,16 +146,6 @@
                                                                                    name="age" min="1" max="100" required
                                                                                    placeholder="age 0-100"/>
                                                                         </div>
-                                                                        <!--                                                                            </div>-->
-                                                                        <!--                                                                            <div class="col-sm-6 bg-white">-->
-                                                                        <!--                                                                                <div class="form-group form-check text-center">-->
-                                                                        <!--                                                                                    <label class="h8 mb-2 col-form-label"><strong>Enabled:</strong></label>-->
-                                                                        <!--                                                                                    <p>-->
-                                                                        <!--                                                                                        <input type="checkbox" name="enabled" id ="editEnabled" value="1" checked/>-->
-                                                                        <!--                                                                                    </p>-->
-                                                                        <!--                                                                                </div>-->
-                                                                        <!--                                                                            </div>-->
-                                                                        <!--                                                                        </div>-->
                                                                         <div class="form-group text-center">
                                                                             <label for="editUsername"
                                                                                    class="col-form-label"><strong>Email</strong></label>
@@ -168,7 +155,6 @@
                                                                                    type="text" required minlength="3"
                                                                                    maxlength="50"/>
                                                                         </div>
-
                                                                         <div class="form-group text-center">
                                                                             <label for="editPasword"
                                                                                    class="col-form-label"><strong>Password</strong></label>
@@ -208,15 +194,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--**********************EDIT OFF**************************-->
                                         </td>
                                         <td>
-                                            <!--**********************DELETE ON**************************-->
+                                            <!--DELETE -->
                                             <button type="button" class="btn btn-danger" data-toggle="modal"
                                                     th:data-target="${'#deleteUser' + currentUser.getId()}">
                                                 Delete
                                             </button>
-
                                             <!-- Modal -->
                                             <div class="modal" th:id="${'deleteUser' + currentUser.getId()}">
                                                 <div class="modal-dialog" role="document">
@@ -229,7 +213,6 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-
                                                         <form th:method="GET"
                                                               th:action="@{deleteUser/{id}(id=${currentUser.getId()})}"
                                                               id="deleteUser">
@@ -265,8 +248,6 @@
                                                                                    th:value="${currentUser.getLastname()}"
                                                                                    readonly/>
                                                                         </div>
-                                                                        <!--                                                                        <div class="row">-->
-                                                                        <!--                                                                            <div class="col-sm-6 bg-white">-->
                                                                         <div class="form-group text-center">
                                                                             <label for="deleteAge"
                                                                                    class="col-form-label"><strong>Age</strong></label>
@@ -276,19 +257,6 @@
                                                                                    name="age" min="1" max="100" required
                                                                                    readonly/>
                                                                         </div>
-                                                                        <!--                                                                            </div>-->
-
-                                                                        <!--                                                                            <div class="col-sm-6 bg-white">-->
-                                                                        <!--                                                                                <div class="form-group form-check text-center">-->
-                                                                        <!--                                                                                    <label for="deleteEnabled" class="h8 mb-2 col-form-label"><strong>Enabled:</strong></label>-->
-                                                                        <!--                                                                                    <p>-->
-                                                                        <!--                                                                                        <input class="form-check-input" type="checkbox"-->
-                                                                        <!--                                                                                               style="text-align:center;" id="deleteEnabled"-->
-                                                                        <!--                                                                                               name="enabled" th:value="${currentUser.isEnabled()}" readonly/>-->
-                                                                        <!--                                                                                    </p>-->
-                                                                        <!--                                                                                </div>-->
-                                                                        <!--                                                                            </div>-->
-                                                                        <!--                                                                        </div>-->
                                                                         <div class="form-group text-center">
                                                                             <label for="deleteUsername"
                                                                                    class="col-form-label"><strong>Email</strong></label>
@@ -298,7 +266,6 @@
                                                                                    type="text" required minlength="3"
                                                                                    maxlength="50" readonly/>
                                                                         </div>
-
                                                                         <div class="form-group text-center">
                                                                             <label for="deleteRoles"
                                                                                    class="col-form-label"><strong>Role</strong></label>
@@ -322,7 +289,6 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                         th:data-dismiss="modal">Close
                                                                 </button>
-                                                                <!--                                                                <button type="button" class="btn btn-primary" th:data-target="${'/'+currentUser.getId()}">Save changes</button>-->
                                                                 <input type="submit" class="btn btn-danger"
                                                                        value="Delete"/>
                                                             </div>
@@ -332,24 +298,17 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <!--**********************DELETE OFF**************************-->
                                 </th:block>
-
                             </table>
-                            <!--***********************************-->
                         </div>
                     </div>
-                    <!--************* закладка NewUser  **********************-->
+                    <!--Add New user  -->
                     <div class="tab-pane fade" id="new_user">
-
-                        <!--                        <h2 class="h4 mb-3">Add new user</h2>-->
                         <div class="card-header">
                             <div class="m-1">
                                 <h4>Add new user</h4>
                             </div>
                         </div>
-
-
                         <div class="col border bg-white">
                             <div class="row">
                                 <div class="col-sm-4 bg-white">
@@ -366,47 +325,30 @@
                                                        th:field="*{firstname}" id="firstName" type="text"
                                                        placeholder="First name"/>
                                             </div>
-
                                             <div class="form-group">
                                                 <h5 class="h8 mb-0 text-center">Last name</h5>
                                                 <input class="form-control form-control-sm bg-warning"
                                                        th:field="*{lastname}" id="lastName" type="text"
                                                        placeholder="Last name"/>
                                             </div>
-
-
-                                            <!--                                            <div class="row">-->
-                                            <!--                                                <div class="col-sm-6 bg-white">-->
                                             <div class="form-group">
                                                 <h5 class="h8 mb-0 text-center">Age</h5>
                                                 <input class="form-control form-control-sm" type="number"
                                                        th:field="*{age}" id="age" name="age" min="1" max="100" required
                                                        placeholder="age 0-100 "/>
                                             </div>
-                                            <!--                                                </div>-->
-                                            <!--                                                <div class="col-sm-6 bg-white">-->
-                                            <!--                                                    <div class="form-group text-center">-->
-                                            <!--                                                        <h5 class="h8 mb-2 text-center" >Enabled</h5>-->
-                                            <!--                                                        <input type="checkbox" style="text-align:center;" th:field="*{enabled}"/>-->
-                                            <!--                                                    </div>-->
-                                            <!--                                                </div>-->
-                                            <!--                                            </div>-->
-
-
                                             <div class="form-group">
                                                 <h5 class="h8 mb-0 text-center">Email</h5>
                                                 <input class="form-control form-control-sm bg-warning"
                                                        th:field="*{username}" id="username" type="text"
                                                        placeholder="Email"/>
                                             </div>
-
                                             <div class="form-group">
                                                 <h5 class="h8 mb-0 text-center">Password</h5>
-                                                <input class="form-control form-control-sm bg-warning"
+                                                <input class="form-control form-control-sm"
                                                        th:field="*{password}" id="password" type="password"
                                                        placeholder="Password"/>
                                             </div>
-
                                             <div class="form-group text-center">
                                                 <h5 class="h8 mb-0 text-center">Role</h5>
                                                 <select multiple class="form-control" id="roles" name="checkboxName">
@@ -434,9 +376,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--***********************************-->
-                    <!--*********** TAB All Users ************************-->
-
                 </div>
             </div>
         </div>

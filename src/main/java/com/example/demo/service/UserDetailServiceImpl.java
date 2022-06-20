@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Role;
 import com.example.demo.model.User;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,14 +18,16 @@ import java.util.List;
 @Service
 @Transactional
 public class UserDetailServiceImpl implements UserService, UserDetailsService {
-    @Autowired
-    UserRepository userRepository;
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-////        return NoOpPasswordEncoder.getInstance();
-//    }
+    private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
+
+    @Autowired
+    public UserDetailServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -61,5 +65,23 @@ public class UserDetailServiceImpl implements UserService, UserDetailsService {
     @Override
     public void deleteUserById(long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void saveRole(Role role) {
+        roleRepository.save(role);
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
+    }
+
+    public Role getRoleByName(String roleName) {
+        return roleRepository.getRoleByName(roleName);
+    }
+
+    public Role getRoleById(Long idRole) {
+        return roleRepository.getRoleById(idRole);
     }
 }

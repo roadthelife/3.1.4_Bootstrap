@@ -8,14 +8,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/")
-public class ControllerUser {
+public class UserController {
+
+
+    private UserDetailServiceImpl userService;
+
     @Autowired
-    private UserDetailServiceImpl userDetailServiceImpl;
+    public UserController(UserDetailServiceImpl userService) {
+        this.userService = userService;
+    }
 
     // начальная страница
     @GetMapping({"/", "/index"})
@@ -30,7 +34,7 @@ public class ControllerUser {
 
     @RequestMapping("/user")
     public String showAllUsers(Model model, Principal principal) {
-        User user = (User) userDetailServiceImpl.loadUserByUsername(principal.getName());
+        User user = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("currentUserRoleList", user.getRoles());
         model.addAttribute("currentUser", user);
         System.out.println("showAllUsers/allUsers " + user.getRoles().toString());
