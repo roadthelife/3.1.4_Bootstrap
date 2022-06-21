@@ -20,7 +20,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping("/user")
     @GetMapping("/user")
     public String showAllUsers(Model model, Principal principal) {
         User user = (User) userService.loadUserByUsername(principal.getName());

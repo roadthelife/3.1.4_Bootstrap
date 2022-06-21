@@ -27,7 +27,7 @@ public class AdminController {
     }
 
     // start page
-    @RequestMapping("/")
+    @GetMapping("/")
     public String showAllUsers(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = (User) userService.loadUserByUsername(userDetails.getUsername());
         model.addAttribute("newUser", new User());
